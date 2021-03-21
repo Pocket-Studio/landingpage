@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <script src="./js/three.min.js"></script>
+    <title>Three</title>
+</head>
+<body>
+    <div id='pocketstudio'>        
+        <h1>
+            Pocket Studio        
+        </h1>
+    </div>
+
+
+
+<style>
+
+     @font-face {
+        font-family: Coolvetica;
+        src: url(./fonts/coolvetica/coolvetica\ compressed\ rg.ttf);
+    } 
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    #pocketstudio {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        padding: 0;
+        margin: 0;
+    }
+    h1 {
+        font-family: Coolvetica;
+        position: absolute;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        font-size: 7rem;
+        letter-spacing: 15px;
+        height: 450px;
+        background: rgba(0, 0, 0, .9);
+        color: #fff;
+    }
+
+
+
+</style>
+
+<script>
+
+    let camera;
+    
+         start = ( ) => {
+            let scene = new THREE.Scene();
+            const WIDTH = window.innerWidth
+            const HEIGHT = window.innerHeight
+            const FOV = 45;
+            const NEAR = 1;
+            const RENDER_DISTANCE = 2500;
+            let camera = new THREE.PerspectiveCamera(FOV, WIDTH/HEIGHT, NEAR, RENDER_DISTANCE)
+            let RENDERER = new THREE.WebGLRenderer({
+                antialias : true,
+            });
+    
+            camera.position.z = 1
+            RENDERER.setSize(WIDTH, HEIGHT)
+            document.getElementById('pocketstudio').appendChild(RENDERER.domElement)
+            RENDERER.setClearColor('black')
+    
+            let geometry = new THREE.BoxGeometry(2500,1500,2500)
+
+            let greenWireframe = new THREE.MeshBasicMaterial({
+                color: 0x12F8AF,
+                wireframe : true,
+            });
+            let redWireframe = new THREE.MeshBasicMaterial({
+                color: 0x12F8AF,
+                wireframe : true,
+            });
+     
+            let cube = new THREE.Mesh(geometry, greenWireframe)
+            let cube2 = new THREE.Mesh(geometry, redWireframe)
+            scene.add(cube, cube2)
+            RENDERER.render(scene,camera)
+    
+            const render = () => {
+            RENDERER.render(scene,camera)
+                    cube.rotation.x += 0.001;
+                    cube.rotation.y += 0.001;
+                    cube.rotation.z += 0.001;
+                    cube2.rotation.y += 0.001;
+                    cube2.rotation.z += 0.001;
+                    requestAnimationFrame(render)            
+                }
+            render()
+        
+            document.onmousemove = (e) => {
+                console.log(e)
+                camera.position.x += e.movementX / 3
+                camera.position.y += e.movementY / 3
+                cube.rotation.x += 0.001;
+                    cube.rotation.y += 0.01;
+                    cube.rotation.z += 0.01;
+                    cube2.rotation.y -= 0.01;
+                    cube2.rotation.z -= 0.01;
+            }
+    
+            const loader = new THREE.FontLoader();
+    
+        
+        }
+    
+     window.onload = start 
+    
+    </script>
+
+
+
+
+</body>
+</html>
